@@ -1,0 +1,7 @@
+base   personaltodo
+author Michael Große
+email  mic.grosse6dokuwiki@googlemail.com
+date   2019-11-16
+name   personaltodo plugin
+desc   single user todo app, integrated with DokuWiki
+url    https://www.dokuwiki.org/plugin:personaltodo
