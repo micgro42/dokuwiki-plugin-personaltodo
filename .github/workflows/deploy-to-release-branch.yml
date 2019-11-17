@@ -1,0 +1,28 @@
+name: Deploy to Release branch
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    - run: git checkout release || git checkout -b release
+    - run: git checkout origin/master -- .
+    - run: yarn install
+    - run: yarn build
+    - run: git add -f build
+    - run: git config --global user.name "${GITHUB_ACTOR}"
+    - run: git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+    - run: git commit -m "Release"
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: release
+
