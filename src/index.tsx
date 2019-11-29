@@ -7,7 +7,14 @@ import App from './components/App/App';
 import rootReducer from './reducers/rootReducer';
 import * as serviceWorker from './serviceWorker';
 
-
+const params = { call: 'plugin_personaltodo', action: 'getdata'};
+const paramString = Object.entries(params).map(([k,v]) => `${k}=${v}`).join('&')
+fetch( 'http://127.0.0.1/~michael/dokuwiki/lib/exe/ajax.php?'+paramString )
+    .then( response => response.text())
+    .then( response => console.log(response))
+    .catch(
+        console.error
+    );
 const store = createStore(rootReducer, {
     todos: {
         'asd': {

@@ -1,7 +1,9 @@
 // todo actions
 
+// eslint-disable-next-line
 import { Project } from '../reducers/projects';
 import { Todo } from '../reducers/todos';
+// eslint-disable-next-line
 import { PROJECT_ADD } from './projectActions';
 
 export const TODO_ADD = 'TODO_ADD';

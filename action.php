@@ -6,14 +6,8 @@
  * @author  Michael Große <mic.grosse6dokuwiki@googlemail.com>
  */
 
-// must be run within Dokuwiki
-if (!defined('DOKU_INC')) {
-    die();
-}
-
 class action_plugin_personaltodo extends DokuWiki_Action_Plugin
 {
-
     /**
      * Registers a callback function for a given event
      *
@@ -23,8 +17,7 @@ class action_plugin_personaltodo extends DokuWiki_Action_Plugin
      */
     public function register(Doku_Event_Handler $controller)
     {
-        $controller->register_hook('AJAX_CALL_UNKNOWN', 'FIXME', $this, 'handle_ajax_call_unknown');
-   
+        $controller->register_hook('AJAX_CALL_UNKNOWN', 'BEFORE', $this, 'handleAjaxCallUnknown');
     }
 
     /**
@@ -38,9 +31,21 @@ class action_plugin_personaltodo extends DokuWiki_Action_Plugin
      *
      * @return void
      */
-    public function handle_ajax_call_unknown(Doku_Event $event, $param)
+    public function handleAjaxCallUnknown(Doku_Event $event, $param)
     {
+        if ($event->data !== 'plugin_personaltodo') {
+            return;
+        }
+        //no other ajax call handlers needed
+        $event->stopPropagation();
+        $event->preventDefault();
+        // verify that this is our call
+        // collect projects and their namespaces
+        // collect tasks
+
+        $data = json_decode('{"todos":{"asd":{"id":"asd","title":"a hardcoded todo","projectsIds":[],"completedDate":null}},"projects":{"qwe":{"id":"qwe","title":"hardcoded Testproject"}}}');
+        //set content type
+        header('Content-Type: application/json');
+        echo json_encode($data);
     }
-
 }
-
