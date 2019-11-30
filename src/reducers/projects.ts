@@ -1,4 +1,5 @@
 import { PROJECT_ADD } from '../actions/projectActions';
+import { INITIALIZE } from '../actions/RootActions';
 
 export interface Project {
     id: string
@@ -16,6 +17,8 @@ const projects = (state: ProjectsMap = {}, action: any) => {
                 ...state,
                 [action.payload.id]: action.payload,
             };
+        case INITIALIZE:
+            return action.payload.projects;
         default:
             return state;
     }

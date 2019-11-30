@@ -36,16 +36,33 @@ class action_plugin_personaltodo extends DokuWiki_Action_Plugin
         if ($event->data !== 'plugin_personaltodo') {
             return;
         }
+        global $conf;
         //no other ajax call handlers needed
         $event->stopPropagation();
         $event->preventDefault();
         // verify that this is our call
         // collect projects and their namespaces
         // collect tasks
+        $namespace = 'plugin:';
+        $pages = [];
+        $dirname = dirname(wikiFN($namespace . 'foo'));
+        search($pages, $dirname, 'search_allpages', [ 'depth' => 1]);
+        $ids = array_map(function($pageResult ) use ($namespace) { return $namespace . $pageResult['id']; }, $pages);
+        $projects = [];
+        foreach ($ids as $id) {
+            $projects[$id] = [
+                'projectId' => $id,
+                'title' => p_get_first_heading(
+                    $id
+                )
+            ];
+        }
 
-        $data = json_decode('{"todos":{"asd":{"id":"asd","title":"a hardcoded todo","projectsIds":[],"completedDate":null}},"projects":{"qwe":{"id":"qwe","title":"hardcoded Testproject"}}}');
+        $data = json_decode('{"todos":{"asd":{"todoId":"asd","title":"a hardcoded todo","projectIds":[],"completedDate":null}}}', true);
+        $data['projects'] = $projects;
         //set content type
         header('Content-Type: application/json');
+        header('Access-Control-Allow-Origin: *');
         echo json_encode($data);
     }
 }

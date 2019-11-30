@@ -14,9 +14,9 @@ const AddTodo = ({ dispatch }: any) => {
                         return
                     }
                     dispatch(addTodo({
-                        id:  titleInput.value,
+                        todoId:  titleInput.value,
                         title: titleInput.value,
-                        projectsIds: [],
+                        projectIds: [],
                         completedDate: null,
                     }));
                     titleInput.value = ''

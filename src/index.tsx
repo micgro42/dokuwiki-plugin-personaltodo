@@ -6,31 +6,29 @@ import { Provider } from 'react-redux'
 import App from './components/App/App';
 import rootReducer from './reducers/rootReducer';
 import * as serviceWorker from './serviceWorker';
+import hydrateStore from './actions/RootActions';
+
+const store = createStore(
+    rootReducer,
+// @ts-ignore
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 const params = { call: 'plugin_personaltodo', action: 'getdata'};
 const paramString = Object.entries(params).map(([k,v]) => `${k}=${v}`).join('&')
-fetch( 'http://127.0.0.1/~michael/dokuwiki/lib/exe/ajax.php?'+paramString )
-    .then( response => response.text())
-    .then( response => console.log(response))
+fetch( 'http://127.0.0.1/~michael/dokuwiki/lib/exe/ajax.php?'+paramString, {
+    // credentials: 'include',
+    mode: 'cors',
+} )
+    .then( response => response.json())
+    .then( response => {
+        console.log(response);
+        store.dispatch(hydrateStore(response));
+    })
     .catch(
         console.error
     );
-const store = createStore(rootReducer, {
-    todos: {
-        'asd': {
-            id: 'asd',
-            title: 'a hardcoded todo',
-            projectsIds: [],
-            completedDate: null
-        }
-    },
-    projects: {
-        'qwe': {
-            id: 'qwe',
-            title: 'hardcoded Testproject'
-        }
-    }
-});
+
 
 render(
     <Provider store={store}>

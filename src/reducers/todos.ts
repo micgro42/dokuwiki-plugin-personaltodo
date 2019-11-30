@@ -1,9 +1,10 @@
+import { INITIALIZE } from '../actions/RootActions';
 import { TODO_ADD, TODO_COMPLETE, ToDoActions } from '../actions/todoActions';
 
 export interface Todo {
-    id: string,
+    todoId: string,
     title: string,
-    projectsIds: string[]
+    projectIds: string[]
     // categoryId: string,
     // dueDate: string,
     completedDate: null | string
@@ -32,6 +33,9 @@ const todos = (state: TodoMap = {}, action: ToDoActions|any) => {
                     completedDate: action.date
                 },
             };
+        case INITIALIZE:
+            // Todo: sort todos
+            return action.payload.todos;
         default:
             return state;
     }
