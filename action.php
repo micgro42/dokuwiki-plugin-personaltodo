@@ -47,7 +47,9 @@ class action_plugin_personaltodo extends DokuWiki_Action_Plugin
         $pages = [];
         $dirname = dirname(wikiFN($namespace . 'foo'));
         search($pages, $dirname, 'search_allpages', [ 'depth' => 1]);
-        $ids = array_map(function($pageResult ) use ($namespace) { return $namespace . $pageResult['id']; }, $pages);
+        $ids = array_map(function ($pageResult) use ($namespace) {
+            return $namespace . $pageResult['id'];
+        }, $pages);
         $projects = [];
         foreach ($ids as $id) {
             $projects[$id] = [
@@ -58,7 +60,10 @@ class action_plugin_personaltodo extends DokuWiki_Action_Plugin
             ];
         }
 
-        $data = json_decode('{"todos":{"asd":{"todoId":"asd","title":"a hardcoded todo","projectIds":[],"completedDate":null}}}', true);
+        $data = json_decode(
+            '{"todos":{"asd":{"todoId":"asd","title":"a hardcoded todo","projectIds":[],"completedDate":null}}}',
+            true
+        );
         $data['projects'] = $projects;
         //set content type
         header('Content-Type: application/json');
