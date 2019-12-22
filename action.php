@@ -3,12 +3,12 @@
 /**
  * DokuWiki Plugin personaltodo (Action Component)
  *
- * @license GPL 2 http://www.gnu.org/licenses/gpl-2.0.html
  * @author  Michael Große <mic.grosse6dokuwiki@googlemail.com>
+ * @license GPL 2 http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-//namespace dokuwiki\plugin\personaltodo;
-
+use dokuwiki\plugin\personaltodo\includes\ProjectsSearch;
+use dokuwiki\plugin\personaltodo\includes\TodoSearch;
 use dokuwiki\plugin\struct\meta\Search;
 
 class action_plugin_personaltodo extends DokuWiki_Action_Plugin
@@ -38,6 +38,7 @@ class action_plugin_personaltodo extends DokuWiki_Action_Plugin
      */
     public function handleAjaxCallUnknown(Doku_Event $event, $param)
     {
+        // verify that this is our call
         if ($event->data !== 'plugin_personaltodo') {
             return;
         }
@@ -45,60 +46,18 @@ class action_plugin_personaltodo extends DokuWiki_Action_Plugin
         //no other ajax call handlers needed
         $event->stopPropagation();
         $event->preventDefault();
-        // verify that this is our call
-        // collect projects and their namespaces
-        // collect tasks
-        $namespace = 'plugin:';
-        $pages = [];
-        $dirname = dirname(wikiFN($namespace . 'foo'));
-        search($pages, $dirname, 'search_allpages', ['depth' => 1]);
-        $ids = array_map(
-            function ($pageResult) use ($namespace) {
-                return $namespace . $pageResult['id'];
-            }, $pages
-        );
-        $projects = [];
-        foreach ($ids as $id) {
-            $projects[$id] = [
-                'projectId' => $id,
-                'title' => p_get_first_heading(
-                    $id
-                ),
-            ];
-        }
-
-        $apiColIds = [
-            'todoId',
-            'title',
-            'projectIds',
-            'dueDate',
-            'completedDate',
-        ];
-
-        $structSearch = new Search();
-        $structSearch->addSchema('personaltodo');
-        $structSearch->addColumn('%rowid%');
-        $structSearch->addColumn('*');
-        $tasks = $structSearch->execute();
-        $tasks = array_map(
-            function ($task) use ($apiColIds) {
-                return array_combine(
-                    $apiColIds,
-                    array_map(
-                        function ($value) {
-                            return $value->getRawValue();
-                        },
-                        $task
-                    )
-                );
-            },
-            $tasks
-        );
-        $tasks = array_column($tasks, null, 'todoId');
 
         $data = [];
-        $data['projects'] = $projects;
-        $data['todos'] = $tasks;
+
+        // collect projects and their namespaces
+        $namespace = 'plugin:';
+        $projectSearch = new ProjectsSearch();
+        $data['projects'] = $projectSearch->getProjects($namespace);
+
+        // collect tasks
+        $todoSearch = new TodoSearch(new Search());
+        $data['todos'] = $todoSearch->getTodos();
+
         //set content type
         header('Content-Type: application/json');
         header('Access-Control-Allow-Origin: *');
