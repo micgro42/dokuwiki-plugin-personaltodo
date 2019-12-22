@@ -3,16 +3,17 @@
 
 namespace dokuwiki\plugin\personaltodo\includes;
 
-
+// fixme add repo interface
 class ProjectsSearch
 {
-    // fixme: make namespace array of strings
-    public function getProjects($namespace): array {
+    // future: make namespace array of strings
+    final public function getProjects(String $namespace): array
+    {
         $pages = [];
         $dirname = dirname(wikiFN($namespace . 'foo'));
         search($pages, $dirname, 'search_allpages', ['depth' => 1]);
         $ids = array_map(
-            function ($pageResult) use ($namespace) {
+            function (array $pageResult) use ($namespace) {
                 return $namespace . $pageResult['id'];
             },
             $pages

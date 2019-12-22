@@ -2,15 +2,19 @@
 
 namespace dokuwiki\plugin\personaltodo\includes;
 
+use dokuwiki\plugin\struct\meta\Search;
+
 class TodoSearch
 {
     private $structSearch;
 
-    public function __construct(\dokuwiki\plugin\struct\meta\Search $structSearch) {
+    public function __construct(Search $structSearch)
+    {
         $this->structSearch = $structSearch;
     }
 
-    public function getTodos(): array {
+    final public function getTodos(): array
+    {
         $apiColIds = [
             'todoId',
             'title',
