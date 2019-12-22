@@ -9,8 +9,10 @@ class ProjectsSearch
     // future: make namespace array of strings
     final public function getProjects(String $namespace): array
     {
+        // fixme: make sure namespace ends in :
         $pages = [];
         $dirname = dirname(wikiFN($namespace . 'foo'));
+        // fixme: add functionality to find also startpages
         search($pages, $dirname, 'search_allpages', ['depth' => 1]);
         $ids = array_map(
             function (array $pageResult) use ($namespace) {

@@ -36,13 +36,21 @@ class action_plugin_personaltodo extends DokuWiki_Action_Plugin
      *
      * @return void
      */
-    public function handleAjaxCallUnknown(Doku_Event $event, $param)
+    final public function handleAjaxCallUnknown(Doku_Event $event, $param): void
     {
         // verify that this is our call
         if ($event->data !== 'plugin_personaltodo') {
             return;
         }
-        global $conf;
+
+        // only allow logged-in users
+        global $conf, $INPUT;
+        $user = $INPUT->server->str('REMOTE_USER');
+        if ($user === '') {
+            http_status(401);
+            exit();
+        }
+
         //no other ajax call handlers needed
         $event->stopPropagation();
         $event->preventDefault();
@@ -50,6 +58,7 @@ class action_plugin_personaltodo extends DokuWiki_Action_Plugin
         $data = [];
 
         // collect projects and their namespaces
+        // todo: get this from config
         $namespace = 'plugin:';
         $projectSearch = new ProjectsSearch();
         $data['projects'] = $projectSearch->getProjects($namespace);
