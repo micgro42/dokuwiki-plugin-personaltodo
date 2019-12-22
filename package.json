@@ -4,6 +4,7 @@
     "main": "index.js",
     "author": "Michael Große <mic.grosse@googlemail.com>",
     "license": "GPL-2",
+    "homepage": "./",
     "dependencies": {
         "@types/jest": "24.0.23",
         "@types/node": "12.12.8",
