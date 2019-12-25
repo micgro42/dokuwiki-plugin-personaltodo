@@ -44,7 +44,7 @@ class action_plugin_personaltodo extends DokuWiki_Action_Plugin
         }
 
         // only allow logged-in users
-        global $conf, $INPUT;
+        global $INPUT;
         $user = $INPUT->server->str('REMOTE_USER');
         if ($user === '') {
             http_status(401);
@@ -55,6 +55,21 @@ class action_plugin_personaltodo extends DokuWiki_Action_Plugin
         $event->stopPropagation();
         $event->preventDefault();
 
+        $action =$INPUT->str('action');
+        switch ($action) {
+            case 'getdata':
+                $this->sendData();
+                break;
+            case 'saveToDo':
+                // Todo: implement functionality for saveing new todos
+                break;
+            default:
+                throw new RuntimeException('unknown action ' . $action);
+        }
+    }
+
+    private function sendData(): void
+    {
         $data = [];
 
         // collect projects and their namespaces
