@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { addTodo } from '../actions/todoActions'
+import { submitTodo } from '../actions/todoActions'
 
 const AddTodo = ({ dispatch }: any) => {
     let titleInput: HTMLInputElement | null;
@@ -13,7 +13,7 @@ const AddTodo = ({ dispatch }: any) => {
                     if (titleInput === null || !titleInput.value.trim()) {
                         return
                     }
-                    dispatch(addTodo({
+                    dispatch(submitTodo({
                         todoId:  titleInput.value,
                         title: titleInput.value,
                         projectIds: [],

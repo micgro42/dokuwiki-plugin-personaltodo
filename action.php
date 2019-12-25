@@ -9,6 +9,7 @@
 
 use dokuwiki\plugin\personaltodo\includes\ProjectsSearch;
 use dokuwiki\plugin\personaltodo\includes\TodoSearch;
+use dokuwiki\plugin\struct\meta\Schema;
 use dokuwiki\plugin\struct\meta\Search;
 
 class action_plugin_personaltodo extends DokuWiki_Action_Plugin
@@ -60,12 +61,31 @@ class action_plugin_personaltodo extends DokuWiki_Action_Plugin
             case 'getdata':
                 $this->sendData();
                 break;
-            case 'saveToDo':
-                // Todo: implement functionality for saveing new todos
+            case 'saveTodo':
+                $this->saveTodo();
                 break;
             default:
                 throw new RuntimeException('unknown action ' . $action);
         }
+    }
+
+    private function saveTodo(): void
+    {
+        global $INPUT;
+        $data = [
+            'Title' => $INPUT->str('title', 'foo'),
+            'Projects' => ['plugin:personaltodo'],
+            'Due Date' => '',
+            'Completed' => '',
+        ];
+
+        /** @var helper_plugin_struct $structHelper */
+        $structHelper = plugin_load('helper', 'struct');
+        $lookup = new \dokuwiki\plugin\struct\meta\AccessTableLookup(
+            new Schema('personaltodo')
+        );
+
+        $structHelper->saveLookupData($lookup, $data);
     }
 
     private function sendData(): void

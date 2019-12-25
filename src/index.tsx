@@ -1,17 +1,23 @@
 import React from 'react';
 import { render } from 'react-dom';
 import './index.css';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux'
 import App from './components/App/App';
 import rootReducer from './reducers/rootReducer';
 import * as serviceWorker from './serviceWorker';
 import hydrateStore from './actions/RootActions';
+import thunkMiddleware from 'redux-thunk'
 
 const store = createStore(
     rootReducer,
+    compose(
+    applyMiddleware(
+        thunkMiddleware,
+    ),
 // @ts-ignore
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+    )
 );
 
 const params = { call: 'plugin_personaltodo', action: 'getdata'};
