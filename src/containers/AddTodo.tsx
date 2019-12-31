@@ -24,7 +24,10 @@ const AddTodo = ({ dispatch }: any) => {
                     titleInput.value = ''
                 }}
             >
-                <input ref={node => (titleInput = node)} />
+                <input
+                    required
+                    ref={node => (titleInput = node)}
+                />
                 <input
                     type="date"
                     ref={node => (dueDateInput = node)}
