@@ -28,7 +28,12 @@ export function submitTodo( todo: Todo ) {
 
     return (dispatch: Function) => {
 
-        const params = { call: 'plugin_personaltodo', action: 'saveTodo', title: todo.title};
+        const params = {
+            call: 'plugin_personaltodo',
+            action: 'saveTodo',
+            title: todo.title,
+            dueDate: todo.dueDate,
+        };
         const paramString = Object.entries(params).map(([k,v]) => `${k}=${v}`).join('&')
         return fetch( 'http://127.0.0.1/~michael/dokuwiki/lib/exe/ajax.php?'+paramString, {
             // credentials: 'include',

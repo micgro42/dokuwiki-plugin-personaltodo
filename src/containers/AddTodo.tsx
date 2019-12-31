@@ -4,6 +4,7 @@ import { submitTodo } from '../actions/todoActions'
 
 const AddTodo = ({ dispatch }: any) => {
     let titleInput: HTMLInputElement | null;
+    let dueDateInput: HTMLInputElement | null;
 
     return (
         <div>
@@ -17,12 +18,17 @@ const AddTodo = ({ dispatch }: any) => {
                         todoId:  titleInput.value,
                         title: titleInput.value,
                         projectIds: [],
+                        dueDate: dueDateInput?.value,
                         completedDate: null,
                     }));
                     titleInput.value = ''
                 }}
             >
                 <input ref={node => (titleInput = node)} />
+                <input
+                    type="date"
+                    ref={node => (dueDateInput = node)}
+                />
                 <button type="submit">Add Todo</button>
             </form>
         </div>

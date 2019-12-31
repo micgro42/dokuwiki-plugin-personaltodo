@@ -75,7 +75,7 @@ class action_plugin_personaltodo extends DokuWiki_Action_Plugin
         $data = [
             'Title' => $INPUT->str('title', 'foo'),
             'Projects' => ['plugin:personaltodo'],
-            'Due Date' => '',
+            'Due Date' => $INPUT->str('dueDate', ''),
             'Completed' => '',
         ];
 
