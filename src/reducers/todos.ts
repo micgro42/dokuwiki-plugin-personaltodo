@@ -5,9 +5,9 @@ export interface Todo {
     todoId: string,
     title: string,
     projectIds: string[]
-    // categoryId: string,
-    // dueDate: string,
+    dueDate?: string,
     completedDate: null | string
+    // categoryId: string,
     // description?
     // priorities
     // tags/labels

@@ -4,9 +4,9 @@ import { Todo } from '../../reducers/todos';
 import {ProjectsMap} from "../../reducers/projects";
 import {TodoProjectsDisplay} from "../TodoProjectsDisplay/TodoProjectsDisplay";
 
-const TodoComponent = ({ title, projectIds, projects}: Todo&{projects: ProjectsMap}) => (
+const TodoComponent = ({ dueDate, title, projectIds, projects}: Todo&{projects: ProjectsMap}) => (
     <li>
-        {title} <TodoProjectsDisplay projectIds={projectIds} projects={projects} />
+        {title} {dueDate} <TodoProjectsDisplay projectIds={projectIds} projects={projects} />
     </li>
 );
 
