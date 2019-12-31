@@ -1,7 +1,7 @@
 import { Project } from '../reducers/projects';
 import { Todo } from '../reducers/todos';
 
-export const INITIALIZE = 'INTIALIZE';
+export const INITIALIZE = 'INITIALIZE';
 
 interface StateData {
     // todoList: string[],
@@ -21,7 +21,7 @@ interface StateData {
 }
 
 
-interface initalizeAction {
+export interface initalizeAction {
     type: typeof INITIALIZE,
     payload: {
         todos: {
