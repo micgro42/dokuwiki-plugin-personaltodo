@@ -1,8 +1,8 @@
-import { PROJECT_ADD } from '../actions/projectActions';
-import { INITIALIZE } from '../actions/RootActions';
+import {PROJECT_ADD, ProjectActions} from '../actions/projectActions';
+import {initalizeAction, INITIALIZE} from '../actions/RootActions';
 
 export interface Project {
-    id: string
+    projectId: string
     title: string
 }
 
@@ -10,12 +10,12 @@ export interface ProjectsMap {
     [projectId: string]: Project
 }
 
-const projects = (state: ProjectsMap = {}, action: any) => {
+const projects = (state: ProjectsMap = {}, action: ProjectActions|initalizeAction) => {
     switch (action.type) {
         case PROJECT_ADD:
             return {
                 ...state,
-                [action.payload.id]: action.payload,
+                [action.payload.projectId]: action.payload,
             };
         case INITIALIZE:
             return action.payload.projects;

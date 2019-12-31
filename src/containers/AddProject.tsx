@@ -14,7 +14,7 @@ const AddProject = ({dispatch}: any) => {
                         return;
                     }
                     dispatch(addProject({
-                        id: input.value,
+                        projectId: input.value,
                         title: input.value,
                     }));
                     input.value = '';

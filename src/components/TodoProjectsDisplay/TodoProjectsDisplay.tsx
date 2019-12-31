@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import {ProjectsMap} from "../../reducers/projects";
+import {Project, ProjectsMap} from "../../reducers/projects";
 import {ProjectTag} from "../ProjectTag/ProjectTag";
 import "./TodoProjectsDisplay.scss";
 
@@ -10,9 +10,13 @@ type TodoProjectsDisplayProps = {
 
 export const TodoProjectsDisplay: FunctionComponent<TodoProjectsDisplayProps> = ({projectIds, projects}) => {
 
+    const projectList: Project[] = projectIds.map(projectId => {
+        return projects[projectId] ? projects[projectId] : { projectId: projectId, title: projectId}
+    });
+
     return (
         <ul className="TodoProjectsDisplay">
-            {projectIds.map( projectId => (<li className="TodoProjectsDisplay__project" key={projectId}><ProjectTag {...projects[projectId]} /></li>))}
+            {projectList.map( project => (<li className="TodoProjectsDisplay__project" key={project.projectId}><ProjectTag {...project} /></li>))}
         </ul>
     );
 };
