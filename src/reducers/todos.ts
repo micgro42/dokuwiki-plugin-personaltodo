@@ -1,12 +1,13 @@
+import {initalizeAction, INITIALIZE} from '../actions/RootActions';
 import { TODO_ADD, TODO_COMPLETE, ToDoActions } from '../actions/todoActions';
 
 export interface Todo {
-    id: string,
+    todoId: string,
     title: string,
-    projectsIds: string[]
-    // categoryId: string,
-    // dueDate: string,
+    projectIds: string[]
+    dueDate?: string,
     completedDate: null | string
+    // categoryId: string,
     // description?
     // priorities
     // tags/labels
@@ -17,12 +18,12 @@ export interface TodoMap {
     [todoId: string]: Todo
 }
 
-const todos = (state: TodoMap = {}, action: ToDoActions|any) => {
+const todos = (state: TodoMap = {}, action: ToDoActions|initalizeAction) => {
     switch (action.type) {
         case TODO_ADD:
             return {
                 ...state,
-                [action.payload.id]: action.payload
+                [action.payload.todoId]: action.payload
             };
         case TODO_COMPLETE:
             return {
@@ -32,6 +33,9 @@ const todos = (state: TodoMap = {}, action: ToDoActions|any) => {
                     completedDate: action.date
                 },
             };
+        case INITIALIZE:
+            // Todo: sort todos
+            return action.payload.todos;
         default:
             return state;
     }

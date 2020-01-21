@@ -32,8 +32,13 @@
 
 
 import { combineReducers } from 'redux'
-import projects from './projects';
-import todos from './todos';
+import projects, {ProjectsMap} from './projects';
+import todos, {TodoMap} from './todos';
+
+export interface State {
+    todos: TodoMap,
+    projects: ProjectsMap,
+}
 
 const rootReducer = combineReducers({
     projects,

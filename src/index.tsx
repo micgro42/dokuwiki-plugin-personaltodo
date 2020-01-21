@@ -1,29 +1,40 @@
 import React from 'react';
 import { render } from 'react-dom';
 import './index.css';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux'
 import App from './components/App/App';
 import rootReducer from './reducers/rootReducer';
 import * as serviceWorker from './serviceWorker';
+import hydrateStore from './actions/RootActions';
+import thunkMiddleware from 'redux-thunk'
 
+const store = createStore(
+    rootReducer,
+    compose(
+    applyMiddleware(
+        thunkMiddleware,
+    ),
+// @ts-ignore
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+    )
+);
 
-const store = createStore(rootReducer, {
-    todos: {
-        'asd': {
-            id: 'asd',
-            title: 'a hardcoded todo',
-            projectsIds: [],
-            completedDate: null
-        }
-    },
-    projects: {
-        'qwe': {
-            id: 'qwe',
-            title: 'hardcoded Testproject'
-        }
-    }
-});
+const params = { call: 'plugin_personaltodo', action: 'getdata'};
+const paramString = Object.entries(params).map(([k,v]) => `${k}=${v}`).join('&')
+fetch( 'http://127.0.0.1/~michael/dokuwiki/lib/exe/ajax.php?'+paramString, {
+    // credentials: 'include',
+    mode: 'cors',
+} )
+    .then( response => response.json())
+    .then( response => {
+        console.log(response);
+        store.dispatch(hydrateStore(response));
+    })
+    .catch(
+        console.error
+    );
+
 
 render(
     <Provider store={store}>

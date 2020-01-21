@@ -1,9 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { addTodo } from '../actions/todoActions'
+import { submitTodo } from '../actions/todoActions'
 
 const AddTodo = ({ dispatch }: any) => {
     let titleInput: HTMLInputElement | null;
+    let dueDateInput: HTMLInputElement | null;
 
     return (
         <div>
@@ -13,16 +14,24 @@ const AddTodo = ({ dispatch }: any) => {
                     if (titleInput === null || !titleInput.value.trim()) {
                         return
                     }
-                    dispatch(addTodo({
-                        id:  titleInput.value,
+                    dispatch(submitTodo({
+                        todoId:  titleInput.value,
                         title: titleInput.value,
-                        projectsIds: [],
+                        projectIds: [],
+                        dueDate: dueDateInput?.value,
                         completedDate: null,
                     }));
                     titleInput.value = ''
                 }}
             >
-                <input ref={node => (titleInput = node)} />
+                <input
+                    required
+                    ref={node => (titleInput = node)}
+                />
+                <input
+                    type="date"
+                    ref={node => (dueDateInput = node)}
+                />
                 <button type="submit">Add Todo</button>
             </form>
         </div>
