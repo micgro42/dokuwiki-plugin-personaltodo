@@ -7,7 +7,7 @@ namespace dokuwiki\plugin\personaltodo\includes;
 class ProjectsSearch
 {
     // future: make namespace array of strings
-    final public function getProjects(String $namespace): array
+    final public function getProjects(string $namespace): array
     {
         // fixme: make sure namespace ends in :
         $pages = [];
