@@ -1,6 +1,5 @@
 <?php
 
-
 namespace dokuwiki\plugin\personaltodo\includes;
 
 // fixme add repo interface
