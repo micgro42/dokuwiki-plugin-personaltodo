@@ -56,7 +56,7 @@ class action_plugin_personaltodo extends DokuWiki_Action_Plugin
         $event->stopPropagation();
         $event->preventDefault();
 
-        $action =$INPUT->str('action');
+        $action = $INPUT->str('action');
         switch ($action) {
             case 'getdata':
                 $this->sendData();
